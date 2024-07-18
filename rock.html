@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+   body{
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: black;
+    color: white;
+   }
+
+   img{
+    margin-top: -20px;
+    border: 5px solid white;
+    border-radius: 80px;
+    padding: 30px;
+    margin-right: 10px;
+    cursor: pointer;
+   }
+   button{
+    font-size: 30px;
+    cursor: pointer;
+    border: 2px;
+    border-radius: 5px;
+   }
+   .title{
+    font-size: 50px;
+    font-weight: bold;
+   }
+   .moves{
+    margin-top: 20px;
+   }
+   .moves img{
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: -20px;
+    border: none;
+   }
+  </style>
+</head>
+<body>
+<div class="container">
+  <p class="title">rock paper seizors</p>
+  <img onclick="Rock('rock')" src="	https://supersimple.dev/projects/rock-paper-scissors/images/rock-emoji.png" width="70px">
+  <img class="see" onclick="Rock('seizors')" src="https://supersimple.dev/projects/rock-paper-scissors/images/scissors-emoji.png" width="70px">
+  <img onclick="Rock('paper')" src=" https://supersimple.dev/projects/rock-paper-scissors/images/paper-emoji.png" width="70px">
+  <p class="moves"></p>
+  <p class="result"></p>
+  <p class="one"></p>
+  <button onclick="reset()">Reset</button>
+</div>
+<script> 
+  
+  let score = JSON.parse(localStorage.getItem('score')) || {
+    wins : 0,
+    loses : 0,
+    ties : 0 
+  }; 
+
+  document.querySelector('.one').textContent = `wins : ${score.wins} losses : ${score.loses} ties : ${score.ties}`;
+  document.querySelector('.moves').innerHTML =  `You Chose : ${getImage(userValue)}<br>
+                                                 Computer Chose : ${getImage(computer_value)}`
+  document.querySelector('.result').textContent = result; 
+
+  function reset() {
+    score = { wins: 0, loses: 0, ties: 0 };
+    localStorage.removeItem('score');
+    document.querySelector('.one').textContent = `wins : ${score.wins} losses : ${score.loses} ties : ${score.ties}`;
+  }
+
+  function Rock(userValue) {   
+    const choices = ['rock', 'paper', 'seizors'];
+    const computer_value = choices[Math.floor(Math.random() * choices.length)];
+
+    if(computer_value >= 0 && computer_value < 1/3){
+      computer_value = "rock";
+    }
+    else if(computer_value >= 1/3 && computer_value < 2/3){
+      computer_value = "seizors";
+    }
+    else if(computer_value >= 2/3 && computer_value < 1){
+      computer_value = "paper";
+    } 
+
+    let result = '';
+    if (userValue === computer_value) {
+      result = 'It\'s a tie!';
+      score.ties++;
+    } else if (
+      (userValue === 'rock' && computer_value === 'seizors') ||
+      (userValue === 'paper' && computer_value === 'rock') ||
+      (userValue === 'seizors' && computer_value === 'paper')
+    ) {
+      result = 'You win' ;
+      score.wins++;
+    } else {
+      result = 'You lose!';
+      score.loses++;
+    }
+    
+  localStorage.setItem('score',JSON.stringify(score));
+
+  document.querySelector('.one').textContent = `wins : ${score.wins} losses : ${score.loses} ties : ${score.ties}`;
+  document.querySelector('.moves').innerHTML = `You Chose : ${getImage(userValue)}<br>
+                                                Computer Chose : ${getImage(computer_value)}`
+  document.querySelector('.result').textContent = result;     
+} ;
+function getImage(choice) {
+    const images = {
+      rock: 'https://supersimple.dev/projects/rock-paper-scissors/images/rock-emoji.png',
+      paper: 'https://supersimple.dev/projects/rock-paper-scissors/images/paper-emoji.png',
+      seizors: 'https://supersimple.dev/projects/rock-paper-scissors/images/scissors-emoji.png'
+    };
+    return `<img src="${images[choice]}" alt="${choice}" style="width:30px;height:30px;">`;
+}
+
+</script>
+</body>
+</html>
