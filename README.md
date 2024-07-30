@@ -10,4 +10,4 @@ All the code are in thier separate files.
 
 Added a newOption to AutoPlay the game.
 
-# Enjoy RockPaperScissors
+# Enjoy Rock-Paper-Scissors
